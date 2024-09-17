@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { checkOtpDto, CreateAuthDto, sendOtpAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -90,6 +90,23 @@ export class AuthService {
      user.otpId=otp.id
      await this.userRepository.save(user)
      return otp.code
+  }
+
+
+  async validateAcsesToken(token:string){
+    try {
+      const paylod=this.jwtServis.verify<TokenPalod>(token,{
+        secret:process.env.JWT_SECRET,
+      })
+      if(typeof paylod=="object" && paylod?.id){
+          const user=await this.userRepository.findOneBy({id:paylod.id})
+          if(!user) throw new UnauthorizedException("login on Accont")
+            return user
+      }
+      throw new UnauthorizedException("login on Accont")
+    } catch (error) {
+      throw new UnauthorizedException("login on Accont")
+    }
   }
   create(createAuthDto: CreateAuthDto) {
     return 'This action adds a new auth';
