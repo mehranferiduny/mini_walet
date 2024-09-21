@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { WaletService } from './walet.service';
-import {  DepositWaletDto } from './dto/create-walet.dto';
+import {  DepositWaletDto, PrudectIdDto } from './dto/create-walet.dto';
 import { UpdateWaletDto } from './dto/update-walet.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
 
@@ -12,5 +12,15 @@ export class WaletController {
   @Post('deposit')
   deposit(@Body() depositDto:DepositWaletDto){
     return this.waletService.deposit(depositDto)
+  }
+  @Post('withdraw')
+  withdraw(@Body() productId:PrudectIdDto){
+
+    return this.waletService.paymentByProduct(productId)
+  }
+
+  @Get()
+  walet(){
+    return this.waletService.GetTransactionWalet()
   }
 }

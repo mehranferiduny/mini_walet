@@ -6,3 +6,9 @@ export class DepositWaletDto {
   amount:number
 
 }
+
+
+export class PrudectIdDto{
+  @IsNumber()
+  productId:number
+}

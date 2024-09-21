@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException, Scope, UnauthorizedException } from '@nestjs/common';
 import { checkOtpDto, CreateAuthDto, sendOtpAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,13 +8,15 @@ import { OtpEntity } from '../user/entities/otp.entity';
 import { randomInt } from 'crypto';
 import { TokenPalod } from './types/TokenPalod.enum';
 import { JwtService } from '@nestjs/jwt';
+import { REQUEST } from '@nestjs/core';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository:Repository<User>,
     @InjectRepository(OtpEntity) private readonly otpRepository:Repository<OtpEntity>,
-    private readonly jwtServis:JwtService
+    private readonly jwtServis:JwtService,
+  
   ){}
 
   async sendOtp(sendOtp:sendOtpAuthDto){
@@ -117,7 +119,7 @@ export class AuthService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} auth`;
+   
   }
 
   update(id: number, updateAuthDto: UpdateAuthDto) {

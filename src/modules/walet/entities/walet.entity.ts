@@ -10,6 +10,10 @@ export class Walet {
   type:string;
   @Column()
   invoice_number:string;
+  @Column({nullable:true})
+  reason:string;
+  @Column({nullable:true})
+  prodectId:number;
   @Column({type:'numeric'})
   amount:number;
   @CreateDateColumn()
